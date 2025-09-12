@@ -1,0 +1,15 @@
+
+
+
+
+ <div class="card w-[330px] p-2 border-2 b ">
+              <img class=" w-[280px] border-2  h-[180px] border-red-600" src="" alt="">
+            <h3 class="font-bold">Mango Tree</h3>
+            <p>A fast-growing tropical tree that produces delicious, juicy mangoes during summer. Its dense green</p>
+            <section class="button-section flex justify-between ">
+                <button class="p-1 rounded-xl bg-[#DCFCE7] text-green-500"> Fruit tree</button>
+                <button class="p-1 rounded-xl font-bold"> ৳500</button>
+
+            </section>
+            <button class="add-to-cart p-2 bg-green-700 text-white rounded-xl">Add to Cart </button>
+          </div>
