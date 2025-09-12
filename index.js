@@ -18,9 +18,12 @@ const loadPlants = () => {
 const loadCategoryProducts = (id) => {
   fetch(`https://openapi.programming-hero.com/api/category/${id}`)
     .then(res => res.json())
-    .then(data => displayProducts(data.data.plants)) // ✅ FIXED
+    .then(data => displayProducts(data.data.plants))
     .catch(err => console.error("Error loading category products:", err));
 };
+
+// CART state
+let cart = [];
 
 // Display products
 const displayProducts =(products)=>{
@@ -29,8 +32,9 @@ const displayProducts =(products)=>{
 
   for(let product of products){
     const div = document.createElement('div');
-    div.className = "border rounded-xl shadow-sm p-4"; // ✅ added some styling
-    div.innerHTML = ` <section class ="bg-white"> 
+    div.className = "border rounded-xl shadow-sm p-4 bg-white";
+
+    div.innerHTML = `
       <img class="w-[100%] h-[180px] object-cover mx-auto rounded" src="${product.image}" alt="${product.name}">
       <h3 class="font-bold mt-2">${product.name}</h3>
       <p class="text-sm text-gray-600">${product.description?.slice(0, 100) || ""}...</p>
@@ -38,8 +42,14 @@ const displayProducts =(products)=>{
           <button class="p-1 rounded-xl bg-[#DCFCE7] text-green-500">${product.category}</button>
           <button class="p-1 rounded-xl font-bold">৳${product.price}</button>
       </section>
-      <button class="add-to-cart  onclick()  p-2 bg-green-700 text-white rounded-xl mt-2 w-full">Add to Cart</button> </section>
+      <button class="add-to-cart p-2 bg-green-700 text-white rounded-xl mt-2 w-full">Add to Cart</button>
     `;
+
+    // ✅ attach event listener properly
+    div.querySelector(".add-to-cart").addEventListener("click", () => {
+      addCart(product);
+    });
+
     productContainer.appendChild(div);
   }
 };
@@ -60,8 +70,42 @@ const displayCatagories = (branches) => {
   }
 };
 
+// Add to cart
+const addCart = (product)=>{
+  cart.push(product);
+  displayCart();
+};
+
+// Display cart
+const displayCart =()=>{
+  const cartContainer = document.getElementById('cart-container');
+  cartContainer.innerHTML =
+   "<h1 class='font-bold mb-2'>Your Cart</h1>";
+
+  let total = 0;
+
+  for (let item of cart) {
+    total += item.price;
+
+    const div = document.createElement("div");
+    div.className = "flex justify-between items-center border-b py-2";
+    div.innerHTML = `
+      <span>${item.name}</span>
+      <span>৳${item.price}</span>
+    `;
+    cartContainer.appendChild(div);
+  }
+
+  // Show total
+  const totalDiv = document.createElement("div");
+  totalDiv.className = "font-bold flex justify-between mt-2 border-t pt-2";
+  totalDiv.innerHTML = `
+    <span>Total:</span>
+    <span>৳${total}</span>
+  `;
+  cartContainer.appendChild(totalDiv);
+};
+
 // Initial load
 loadCatagories();
 loadPlants();
-
-
